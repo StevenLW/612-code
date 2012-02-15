@@ -35,6 +35,7 @@ public:
 	turret(Jaguar&, Jaguar&, Jaguar&, Jaguar&, Counter&);
     ~turret();
 	void align(target&);
+	void align(/*something goes here, don't know how callbacks work*/);
     void enable();
     void disable();
     void turn(DIRECTION);

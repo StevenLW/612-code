@@ -18,7 +18,7 @@
 /*
  * Entry points for vision processing: distance and angle from image
  */
- 
+
 /*
  * Calculated angles are relative to perpendicular.
  */
@@ -69,8 +69,16 @@ ColorImage* vision_processing::get_old_image() {
 }
 
 unsigned int vision_processing::determine_aim_target() {
-    // TODO make it do stuff
-    return 0;
+    vector<ParticleAnalysisReport>* targets = get_image_targets(get_image());
+    unsigned int temp = 0;
+    unsigned int highest_target = 0;
+    for (unsigned int i = 0; i < targets.size(); i++) {
+		if (targets.operator[i].center_mass_y > temp) {
+			temp = targets.operator[i].center_mass_y;
+			highest_target = i; 
+		}
+	}
+    return highest_target;
 }
 
 vector<double> vision_processing::get_distance() {
@@ -165,7 +173,7 @@ double get_degrees_from_report(const ParticleAnalysisReport& r) {
 double get_height_offset_from_report(const ParticleAnalysisReport& r, double dist) {
     //meant to be called once you have dist from get_distance_from_report
     //this way we don't need to have target detection
-    double theta = angle_offset(RESOLUTION().Y()/2 - r.center_mass_y, RESOLUTION().Y(), FOV().Y()); 
+    double theta = angle_offset(RESOLUTION().Y()/2 - r.center_mass_y, RESOLUTION().Y(), FOV().Y());
     return std::tan(theta)*dist;
 }
 
@@ -195,3 +203,5 @@ double inline distance_from_height(int height) {
 double inline deviation_from_angle(double angle) {
     return ((0.0188*angle) + 0.017);
 }
+
+
