@@ -16,7 +16,7 @@
 #include <cstdlib>
 
 
-const int ZERO_MAX = 4;
+const int ZERO_MAX = 4;     //this is the error buffer, right? Is 4 pixels a good buffer?
 const int ZERO_MIN = -1;
 const float TURN_SPEED = 0.1;
 
@@ -28,10 +28,10 @@ const double PID_D = 0.0;
 turret::turret(Jaguar& rotate, Jaguar& winch, Jaguar& launcha, Jaguar& launchb, Counter& count) {
     rotation_jag = &rotate;
     winch_jag = &winch;
-    
+
     launcher_jags = new two_jags(launcha, launchb);
     launch_speed = new launch_counter(count);
-    
+
     //allocate PID Control
 #if DEBUG_612
     launch_control = new SendablePIDController(PID_P, PID_I, PID_D, launch_speed, launcher_jags);
@@ -52,6 +52,18 @@ turret::~turret() {
 
 void turret::align(target& t) {
     cur_target = &t;
+}
+
+void turret::align(target& t, int distance = vision_processing::target_distance_from_center(t) /*IS THIS RIGHT????????????????????????????????????????*/ {
+    if (distance < ZERO_MIN) {
+        turn(RIGHT);
+    }
+    else if (distance > ZERO_MAX) {
+        turn(LEFT);
+    }
+    else {
+        return;
+    }
 }
 
 void turret:turn(DIRECTION direction) {
