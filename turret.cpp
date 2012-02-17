@@ -19,9 +19,9 @@
 turret::turret(Jaguar& rotate, Jaguar& winch, Jaguar& launcha, Jaguar& launchb, Counter& count) {
     rotation_jag = &rotate;
     winch_jag = &winch;
-    
+
     shooter_wheels = new shooter(count, launcha, launchb);
-    
+
     cur_target = NULL;
 }
 
@@ -40,7 +40,7 @@ void turret::align(target& t, int distance = vision_processing::target_distance_
         turn(LEFT);
     }
     else {
-        return;
+        rotation_jag.Set(0.0);
     }
 }
 
