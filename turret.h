@@ -25,13 +25,14 @@
 #include "launch_counter.h"
 #include "vision_alt.h"
 #include "two_jags.h"
+#include "shooter.h"
 
 class turret {
 public:
     enum DIRECTION {
         LEFT = 0,
         RIGHT = 1
-    }
+    };
 	turret(Jaguar&, Jaguar&, Jaguar&, Jaguar&, Counter&);
     ~turret();
 	void align(target&);
@@ -46,12 +47,7 @@ private:
     Jaguar * rotation_jag;
     Jaguar * winch_jag;
 
-    PIDController * launch_control;
-    two_jags * launcher_jags;
-    launch_counter * launch_speed;
-#if DEBUG_612
-    const char * key;
-#endif
+    shooter * shooter_wheels;
 };
 
 
